@@ -1,0 +1,12 @@
+﻿@model Library.Grpc.StatsReply
+@{
+    ViewData["Title"] = "gRPC Dashboard";
+}
+
+<h1>gRPC Dashboard</h1>
+
+<ul class="list-group">
+    <li class="list-group-item">Total books: <b>@Model.TotalBooks</b></li>
+    <li class="list-group-item">Total customers: <b>@Model.TotalCustomers</b></li>
+    <li class="list-group-item">Active loans: <b>@Model.ActiveLoans</b></li>
+</ul>

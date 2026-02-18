@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "Library.Grpc";
+
+package library;
+
+service StatsService {
+  rpc GetDashboardStats (StatsRequest) returns (StatsReply);
+}
+
+message StatsRequest {}
+
+message StatsReply {
+  int32 total_books = 1;
+  int32 total_customers = 2;
+  int32 active_loans = 3;
+}

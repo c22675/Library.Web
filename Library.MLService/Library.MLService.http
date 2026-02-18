@@ -1,0 +1,6 @@
+@Library.MLService_HostAddress = http://localhost:5234
+
+GET {{Library.MLService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model IEnumerable<Library.Data.Models.Loan>
+
+@{
+    ViewData["Title"] = "Loans";
+}
+
+<h1>Loans</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<form asp-action="Index" method="get" class="row row-cols-lg-auto g-2 align-items-center mb-3">
+    <div class="col-12">
+        <select class="form-select"
+                name="customerId"
+                asp-items="@(ViewData["CustomerId"] as SelectList)">
+            <option value="">All customers</option>
+        </select>
+    </div>
+
+    <div class="col-12 form-check">
+        <input class="form-check-input"
+               type="checkbox"
+               name="activeOnly"
+               value="true"
+               @(ViewData["ActiveOnly"] is bool b && b ? "checked" : "") />
+        <label class="form-check-label">Active only</label>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Book</th>
+            <th>Customer</th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["DateSortParm"]"
+                   asp-route-customerId="@ViewData["CurrentCustomer"]"
+                   asp-route-activeOnly="@ViewData["ActiveOnly"]">
+                    Loan Date
+                </a>
+            </th>
+            <th>Return Date</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Book?.Title</td>
+                <td>@item.Customer?.Name</td>
+                <td>@item.LoanDate.ToString("yyyy-MM-dd")</td>
+                <td>@(item.ReturnDate.HasValue? item.ReturnDate.Value.ToString("yyyy-MM-dd") : "-")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.LoanId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.LoanId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.LoanId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

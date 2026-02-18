@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../Library.Data/Library.Data.csproj" />
+  <Project Path="../Library.GrpcService/Library.GrpcService.csproj" />
+  <Project Path="../Library.MLService/Library.MLService.csproj" />
+  <Project Path="Library.Web.csproj" />
+</Solution>

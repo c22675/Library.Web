@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model IEnumerable<Library.Data.Models.Book>
+
+@{
+    ViewData["Title"] = "Books";
+}
+
+<h1>Books</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<form asp-action="Index" method="get" class="row row-cols-lg-auto g-2 align-items-center mb-3">
+    <div class="col-12">
+        <input class="form-control"
+               type="text"
+               name="searchString"
+               value="@ViewData["CurrentFilter"]"
+               placeholder="Search title..." />
+    </div>
+
+    <div class="col-12">
+        <select class="form-select"
+                name="genreId"
+                <select class="form-select" name="genreId" asp-items="@(ViewData["GenreId"] as SelectList)">
+            <option value="">All genres</option>
+        </select>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["TitleSortParm"]"
+                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                   asp-route-genreId="@ViewData["CurrentGenre"]">
+                    Title
+                </a>
+            </th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["PriceSortParm"]"
+                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                   asp-route-genreId="@ViewData["CurrentGenre"]">
+                    Price
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Author?.FullName</td>
+                <td>@item.Genre?.Name</td>
+                <td>@item.Price</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.BookId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
