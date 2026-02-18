@@ -77,7 +77,7 @@ namespace Library.Web.Controllers
         public IActionResult Create()
         {
             ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Title");
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Address");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name");
             return View();
         }
 
