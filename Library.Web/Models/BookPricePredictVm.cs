@@ -8,14 +8,18 @@ public class BookPricePredictVm
     [Required]
     public string Title { get; set; } = "";
 
-    [Display(Name = "Author")]
-    public int AuthorId { get; set; }
+    [Required]
+    [Display(Name = "Category")]
+    public string BookCategory { get; set; } = "";
 
-    [Display(Name = "Genre")]
-    public int GenreId { get; set; }
+    [Range(1, 5)]
+    [Display(Name = "Star rating (1-5)")]
+    public int StarRating { get; set; } = 3;
 
-    public SelectList? Authors { get; set; }
-    public SelectList? Genres { get; set; }
+    [Range(0, 100000)]
+    public int Quantity { get; set; } = 1;
+
+    public SelectList? Categories { get; set; }
 
     public float? PredictedPrice { get; set; }
     public string? Error { get; set; }

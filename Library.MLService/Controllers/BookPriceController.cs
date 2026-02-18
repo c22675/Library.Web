@@ -15,24 +15,27 @@ public class BookPriceController : ControllerBase
         _pool = pool;
     }
 
-    public record BookPriceRequest(string Title, int AuthorId, int GenreId);
-    public record BookPriceResponse(float PredictedPrice);
+    public record PredictRequest(string Title, string BookCategory, int StarRating, int Quantity);
+    public record PredictResponse(float PredictedPrice);
 
     [HttpPost("predict")]
-    public ActionResult<BookPriceResponse> Predict([FromBody] BookPriceRequest req)
+    public ActionResult<PredictResponse> Predict([FromBody] PredictRequest req)
     {
         if (string.IsNullOrWhiteSpace(req.Title))
             return BadRequest("Title is required.");
+        if (string.IsNullOrWhiteSpace(req.BookCategory))
+            return BadRequest("BookCategory is required.");
 
         var input = new BookPriceData
         {
             Title = req.Title,
-            AuthorId = req.AuthorId,
-            GenreId = req.GenreId,
+            BookCategory = req.BookCategory,
+            StarRating = req.StarRating,
+            Quantity = req.Quantity,
             Price = 0
         };
 
-        var pred = _pool.Predict(modelName: "BookPriceModel", example: input);
-        return Ok(new BookPriceResponse(PredictedPrice: pred.Score));
+        var pred = _pool.Predict("BookPriceModel", input);
+        return Ok(new PredictResponse(pred.Score));
     }
 }

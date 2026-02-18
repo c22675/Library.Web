@@ -18,26 +18,29 @@ public class MlController : Controller
         _ml = ml;
     }
 
-    private async Task LoadDropdowns(BookPricePredictVm vm)
+    private void LoadCategories(BookPricePredictVm vm)
     {
-        var authors = await _db.Authors.OrderBy(a => a.FullName).ToListAsync();
-        var genres = await _db.Genres.OrderBy(g => g.Name).ToListAsync();
-        vm.Authors = new SelectList(authors, "AuthorId", "FullName", vm.AuthorId);
-        vm.Genres = new SelectList(genres, "GenreId", "Name", vm.GenreId);
+        var categories = new[]
+        {
+        "Travel", "Mystery", "Historical Fiction", "Classics", "Science Fiction",
+        "Fantasy", "Romance", "Nonfiction", "Thriller", "Young Adult"
+    };
+
+        vm.Categories = new SelectList(categories, vm.BookCategory);
     }
 
     [HttpGet]
-    public async Task<IActionResult> PredictBookPrice()
+    public IActionResult PredictBookPrice()
     {
         var vm = new BookPricePredictVm();
-        await LoadDropdowns(vm);
+        LoadCategories(vm);
         return View(vm);
     }
 
     [HttpPost]
     public async Task<IActionResult> PredictBookPrice(BookPricePredictVm vm)
     {
-        await LoadDropdowns(vm);
+        LoadCategories(vm);
 
         if (!ModelState.IsValid)
             return View(vm);
@@ -45,7 +48,8 @@ public class MlController : Controller
         try
         {
             var result = await _ml.PredictBookPriceAsync(
-                new MlServiceClient.BookPriceRequest(vm.Title, vm.AuthorId, vm.GenreId));
+                new Library.Web.Services.MlServiceClient.BookPriceRequest(
+                    vm.Title, vm.BookCategory, vm.StarRating, vm.Quantity));
 
             vm.PredictedPrice = result?.PredictedPrice;
         }

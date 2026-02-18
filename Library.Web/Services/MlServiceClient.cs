@@ -11,7 +11,7 @@ public class MlServiceClient
         _http = factory.CreateClient("MlService");
     }
 
-    public record BookPriceRequest(string Title, int AuthorId, int GenreId);
+    public record BookPriceRequest(string Title, string BookCategory, int StarRating, int Quantity);
     public record BookPriceResponse(float PredictedPrice);
 
     public async Task<BookPriceResponse?> PredictBookPriceAsync(BookPriceRequest req, CancellationToken ct = default)

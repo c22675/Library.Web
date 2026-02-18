@@ -13,8 +13,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
 var modelPath = Path.Combine(builder.Environment.ContentRootPath, "MLModels", "BookPriceModel.zip");
+var csvPath = Path.Combine(builder.Environment.ContentRootPath, "Data", "books_scraped.csv");
 
-BookPriceTrainer.EnsureModelTrained(builder.Services.BuildServiceProvider(), modelPath);
+BookPriceTrainer.EnsureModelTrained(csvPath, modelPath);
 
 builder.Services.AddPredictionEnginePool<BookPriceData, BookPricePrediction>()
     .FromFile(modelName: "BookPriceModel", filePath: modelPath, watchForChanges: true);

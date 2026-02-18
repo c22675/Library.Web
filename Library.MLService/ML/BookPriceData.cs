@@ -3,8 +3,10 @@
 public class BookPriceData
 {
     public string Title { get; set; } = "";
-    public float AuthorId { get; set; }
-    public float GenreId { get; set; }
+    public string BookCategory { get; set; } = "";
+    public float StarRating { get; set; }
+    public float Quantity { get; set; }
+
     public float Price { get; set; }
 }
 
